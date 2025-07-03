@@ -5,9 +5,9 @@ import geminiService from "./geminiService";
 function App() {
   // State declarations
   const [messages, setMessages] = useState([
-    { text: "Hello traveler! ✈️", sender: "bot" },
+    { text: "Hello there! 🎓", sender: "bot" },
     {
-      text: "I'm your AI travel assistant powered by Gemini. I can help with destinations, itineraries, travel tips, and more! Where would you like to go today?",
+      text: "I'm your AI education and career development assistant powered by Gemini. I can help with course recommendations, career guidance, skill development, job search strategies, and educational planning! What would you like to explore today?",
       sender: "bot",
     },
   ]);
@@ -38,13 +38,16 @@ function App() {
     setIsTyping(true);
 
     try {
-      // Create travel-focused prompt
-      const travelPrompt = `You are a travel expert AI assistant. Respond exclusively about travel-related topics. 
-        If the question isn't directly about travel, creatively connect it to travel. 
-        Keep responses helpful, engaging, and focused on destinations, trips, or travel experiences.
+      // Create education and career-focused prompt
+      const educationCareerPrompt = `You are an expert education and career development AI assistant. Respond exclusively about education, career development, learning, and professional growth topics. 
+        If the question isn't directly about education or career development, creatively connect it to learning, skill development, or career advancement. 
+        Keep responses helpful, engaging, and focused on educational opportunities, career paths, skill building, job market insights, or professional development.
+        Provide actionable advice and specific recommendations when possible.
         User question: ${currentInput}`;
 
-      const botResponse = await geminiService.generateResponse(travelPrompt);
+      const botResponse = await geminiService.generateResponse(
+        educationCareerPrompt
+      );
       setMessages((prev) => [...prev, { text: botResponse, sender: "bot" }]);
       setApiKeyError(false);
     } catch (error) {
@@ -59,7 +62,7 @@ function App() {
         {
           text:
             error.message ||
-            "Sorry, I'm having trouble answering your travel question. Please try again later.",
+            "Sorry, I'm having trouble answering your education/career question. Please try again later.",
           sender: "bot",
         },
       ]);
@@ -121,7 +124,7 @@ function App() {
               fill="currentColor"
               aria-hidden="true"
             >
-              <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z" />
+              <path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z" />
             </svg>
           </span>
           <span className="notification-badge">1</span>
@@ -133,9 +136,9 @@ function App() {
           <div className="chatbot-header" onClick={toggleChat}>
             <div className="chatbot-title">
               <span className="bot-avatar" role="img" aria-label="Bot">
-                ✈️
+                🎓
               </span>
-              <h2>Travel Assistant</h2>
+              <h2>Career & Education Assistant</h2>
               {apiKeyError && (
                 <span
                   className="status-indicator error"
@@ -168,7 +171,7 @@ function App() {
               >
                 {message.sender === "bot" && (
                   <span className="bot-avatar" role="img" aria-label="Bot">
-                    ✈️
+                    🎓
                   </span>
                 )}
                 <div className="message-content">
@@ -192,7 +195,7 @@ function App() {
             {isTyping && (
               <div className="message bot">
                 <span className="bot-avatar" role="img" aria-label="Bot">
-                  ✈️
+                  🎓
                 </span>
                 <div className="message-content typing-indicator">
                   <div className="typing-dots">
@@ -215,9 +218,11 @@ function App() {
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={handleKeyPress}
                 placeholder={
-                  apiKeyError ? "API key required..." : "Ask about travel..."
+                  apiKeyError
+                    ? "API key required..."
+                    : "Ask about education or career development..."
                 }
-                aria-label="Type your travel question"
+                aria-label="Type your education or career question"
                 disabled={isTyping || apiKeyError}
               />
               <button
